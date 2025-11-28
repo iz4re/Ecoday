@@ -202,57 +202,61 @@ class _TabSwitcher extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
-                      onTap: () => onChanged(false),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.directions_bike,
-                            size: 18,
-                            color: !isLogin ? activeColor : inactiveColor,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Daftar',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
+              Align(
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () => onChanged(false),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.auto_awesome,
+                              size: 18,
                               color: !isLogin ? activeColor : inactiveColor,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Text(
+                              'Daftar',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: !isLogin ? activeColor : inactiveColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
-                      onTap: () => onChanged(true),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.person_outline,
-                            size: 18,
-                            color: isLogin ? activeColor : inactiveColor,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Masuk',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () => onChanged(true),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.person_outline,
+                              size: 18,
                               color: isLogin ? activeColor : inactiveColor,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Text(
+                              'Masuk',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: isLogin ? activeColor : inactiveColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -281,12 +285,13 @@ class _LoginForm extends StatelessWidget {
           obscure: true,
         ),
         const SizedBox(height: 24),
-        const EcoPrimaryButton(label: 'Masuk ke Akun', icon: Icons.spa),
+        const Center(child: EcoPrimaryButton(label: 'Masuk ke Akun', icon: Icons.eco)),
         const SizedBox(height: 18),
         const InfoPill(
           title: 'Database Mode',
           subtitle: 'Data tersimpan di Supabase database',
           icon: Icons.auto_awesome,
+          iconColor: AppTheme.accentYellow,
         ),
       ],
     );
@@ -338,9 +343,11 @@ class _RegisterForm extends StatelessWidget {
           obscure: true,
         ),
         SizedBox(height: 24),
-        EcoPrimaryButton(
-          label: 'Mulai Petualangan Eco',
-          icon: Icons.directions_bike,
+        Center(
+          child: EcoPrimaryButton(
+            label: 'Mulai Petualangan Eco',
+            icon: Icons.auto_awesome,
+          ),
         ),
       ],
     );

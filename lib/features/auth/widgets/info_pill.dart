@@ -6,11 +6,13 @@ class InfoPill extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.icon,
+    this.iconColor,
   });
 
   final String title;
   final String subtitle;
   final IconData icon;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class InfoPill extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(icon, color: const Color(0xFF0ABF8A), size: 18),
+            child: Icon(icon, color: iconColor ?? const Color(0xFF0ABF8A), size: 18),
           ),
           const SizedBox(width: 14),
           Column(
