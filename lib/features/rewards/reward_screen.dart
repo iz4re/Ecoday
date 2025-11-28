@@ -64,10 +64,6 @@ class RewardScreen extends StatelessWidget {
                   color: Color(0xFF1F2E2B),
                 ),
               ),
-              Text(
-                '🎁',
-                style: TextStyle(fontSize: 20),
-              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -91,10 +87,6 @@ class RewardScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: const [
-              Text(
-                '👑',
-                style: TextStyle(fontSize: 16),
-              ),
               SizedBox(width: 8),
               Text(
                 'Title & Level Rewards',
@@ -141,10 +133,6 @@ class RewardScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: const [
-              Text(
-                '🏅',
-                style: TextStyle(fontSize: 16),
-              ),
               SizedBox(width: 8),
               Text(
                 'Koleksi Badge',
@@ -179,10 +167,6 @@ class RewardScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: const [
-              Text(
-                '🎫',
-                style: TextStyle(fontSize: 16),
-              ),
               SizedBox(width: 8),
               Text(
                 'Voucher Tersedia',

@@ -62,10 +62,6 @@ class RankingScreen extends StatelessWidget {
                   color: Color(0xFF1F2E2B),
                 ),
               ),
-              Text(
-                '🏆',
-                style: TextStyle(fontSize: 20),
-              ),
             ],
           ),
           const SizedBox(height: 4),

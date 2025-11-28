@@ -67,14 +67,12 @@ class EventLeaderboardCard extends StatelessWidget {
           rank: 2,
           name: 'Siti Rahayu',
           xp: 720,
-          emoji: '😊',
           color: const Color(0xFFB0B0B0),
         ),
         _buildPodiumCard(
           rank: 1,
           name: 'Budi Santoso',
           xp: 850,
-          emoji: '😊',
           color: const Color(0xFFFFC857),
           isFirst: true,
         ),
@@ -82,7 +80,6 @@ class EventLeaderboardCard extends StatelessWidget {
           rank: 3,
           name: 'Ahmad Hidayat',
           xp: 680,
-          emoji: '😊',
           color: const Color(0xFFFF9E5A),
         ),
       ],
@@ -93,10 +90,12 @@ class EventLeaderboardCard extends StatelessWidget {
     required int rank,
     required String name,
     required int xp,
-    required String emoji,
     required Color color,
     bool isFirst = false,
   }) {
+    // Get initials from name
+    String initials = name.split(' ').map((n) => n[0]).take(2).join();
+    
     return Container(
       width: isFirst ? 110 : 90,
       padding: const EdgeInsets.all(12),
@@ -112,10 +111,39 @@ class EventLeaderboardCard extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            emoji,
-            style: TextStyle(fontSize: isFirst ? 32 : 28),
+          Container(
+            width: isFirst ? 48 : 40,
+            height: isFirst ? 48 : 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white.withValues(alpha: 0.9),
+                  Colors.white.withValues(alpha: 0.7),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                initials,
+                style: TextStyle(
+                  color: color,
+                  fontSize: isFirst ? 16 : 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 6),
           Text(
@@ -126,6 +154,7 @@ class EventLeaderboardCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
           const SizedBox(height: 4),
           Text(
@@ -135,10 +164,11 @@ class EventLeaderboardCard extends StatelessWidget {
               fontSize: isFirst ? 13 : 11,
               fontWeight: FontWeight.w600,
             ),
+            maxLines: 1,
           ),
           const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
@@ -148,15 +178,19 @@ class EventLeaderboardCard extends StatelessWidget {
               children: [
                 const Text(
                   '👑',
-                  style: TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 10),
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  'JUARA $rank',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 3),
+                Flexible(
+                  child: Text(
+                    'JUARA $rank',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
                   ),
                 ),
               ],
@@ -191,12 +225,30 @@ class EventLeaderboardCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                children: const [
-                  Text(
-                    '😊',
-                    style: TextStyle(fontSize: 28),
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF9C27B0), Color(0xFFBA68C8)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Y',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -295,30 +347,29 @@ class EventLeaderboardCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        _buildParticipantItem('🏆', '😊', 'Budi Santoso', 850, hasTopBadge: true),
+        _buildParticipantItem('🏆', 'Budi Santoso', 850, hasTopBadge: true),
         const SizedBox(height: 8),
-        _buildParticipantItem('🥈', '😊', 'Siti Rahayu', 720, hasSecondBadge: true),
+        _buildParticipantItem('🥈', 'Siti Rahayu', 720, hasSecondBadge: true),
         const SizedBox(height: 8),
-        _buildParticipantItem('🥉', '😊', 'Ahmad Hidayat', 680, hasThirdBadge: true),
+        _buildParticipantItem('🥉', 'Ahmad Hidayat', 680, hasThirdBadge: true),
         const SizedBox(height: 8),
-        _buildParticipantItem('#4', '😊', 'Dewi Lestari', 620),
+        _buildParticipantItem('#4', 'Dewi Lestari', 620),
         const SizedBox(height: 8),
-        _buildParticipantItem('#5', '😊', 'Rudi Hartono', 580),
+        _buildParticipantItem('#5', 'Rudi Hartono', 580),
         const SizedBox(height: 8),
-        _buildParticipantItem('#6', '😊', 'Maya Putri', 550),
+        _buildParticipantItem('#6', 'Maya Putri', 550),
         const SizedBox(height: 8),
-        _buildParticipantItem('#7', '😊', 'Eko Prasetyo', 520),
+        _buildParticipantItem('#7', 'Eko Prasetyo', 520),
         const SizedBox(height: 8),
-        _buildParticipantItem('#8', '😊', 'Rina Susanti', 480),
+        _buildParticipantItem('#8', 'Rina Susanti', 480),
         const SizedBox(height: 8),
-        _buildParticipantItem('#9', '😊', 'Agus Setiawan', 450),
+        _buildParticipantItem('#9', 'Agus Setiawan', 450),
       ],
     );
   }
 
   Widget _buildParticipantItem(
     String rank,
-    String emoji,
     String name,
     int xp, {
     bool hasTopBadge = false,
@@ -378,10 +429,7 @@ class EventLeaderboardCard extends StatelessWidget {
               ),
             ),
           const SizedBox(width: 12),
-          Text(
-            emoji,
-            style: const TextStyle(fontSize: 24),
-          ),
+          _buildAvatar(name),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -414,6 +462,52 @@ class EventLeaderboardCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAvatar(String name) {
+    // Get initials from name
+    String initials = name.split(' ').map((n) => n[0]).take(2).join();
+    
+    // Generate color based on name
+    final colors = [
+      [const Color(0xFF9C27B0), const Color(0xFFBA68C8)],
+      [const Color(0xFF2196F3), const Color(0xFF64B5F6)],
+      [const Color(0xFFFF9800), const Color(0xFFFFB74D)],
+      [const Color(0xFF4CAF50), const Color(0xFF81C784)],
+      [const Color(0xFFE91E63), const Color(0xFFF06292)],
+    ];
+    
+    final colorSet = colors[name.length % colors.length];
+    
+    return Container(
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: colorSet,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorSet[0].withValues(alpha: 0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

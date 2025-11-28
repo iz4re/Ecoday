@@ -88,11 +88,8 @@ class LeaderboardItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          // Avatar emoji
-          const Text(
-            '😊',
-            style: TextStyle(fontSize: 28),
-          ),
+          // Avatar with initials
+          _buildAvatar(name),
           const SizedBox(width: 12),
           // User info
           Expanded(
@@ -183,6 +180,52 @@ class LeaderboardItem extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAvatar(String name) {
+    // Get initials from name
+    String initials = name.split(' ').map((n) => n[0]).take(2).join();
+    
+    // Generate color based on name
+    final colors = [
+      [const Color(0xFF9C27B0), const Color(0xFFBA68C8)],
+      [const Color(0xFF2196F3), const Color(0xFF64B5F6)],
+      [const Color(0xFFFF9800), const Color(0xFFFFB74D)],
+      [const Color(0xFF4CAF50), const Color(0xFF81C784)],
+      [const Color(0xFFE91E63), const Color(0xFFF06292)],
+    ];
+    
+    final colorSet = colors[name.length % colors.length];
+    
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: colorSet,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colorSet[0].withValues(alpha: 0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

@@ -224,10 +224,6 @@ class EventDetailScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text(
-              '🎯',
-              style: TextStyle(fontSize: 20),
-            ),
             SizedBox(width: 8),
             Text(
               'Ikut Event Sekarang!',

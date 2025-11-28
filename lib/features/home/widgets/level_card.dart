@@ -18,19 +18,45 @@ class LevelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final progress = currentXP / maxXP;
+    
+    // Determine colors based on level
+    List<Color> gradientColors;
+    Color shadowColor;
+    
+    if (level >= 40) {
+      // Level 40+ (4000+ XP): Green
+      gradientColors = [const Color(0xFF4CAF50), const Color(0xFF81C784)];
+      shadowColor = const Color(0xFF4CAF50);
+    } else if (level >= 30) {
+      // Level 30-39 (3000-3999 XP): Yellow/Gold
+      gradientColors = [const Color(0xFFFFC107), const Color(0xFFFFD54F)];
+      shadowColor = const Color(0xFFFFC107);
+    } else if (level >= 20) {
+      // Level 20-29 (2000-2999 XP): Red
+      gradientColors = [const Color(0xFFF44336), const Color(0xFFEF5350)];
+      shadowColor = const Color(0xFFF44336);
+    } else if (level >= 10) {
+      // Level 10-19 (1000-1999 XP): Blue
+      gradientColors = [const Color(0xFF2196F3), const Color(0xFF64B5F6)];
+      shadowColor = const Color(0xFF2196F3);
+    } else {
+      // Level 1-9 (0-999 XP): Purple (default)
+      gradientColors = [const Color(0xFF9C27B0), const Color(0xFFBA68C8)];
+      shadowColor = const Color(0xFF9C27B0);
+    }
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF9C27B0), Color(0xFFBA68C8)],
+        gradient: LinearGradient(
+          colors: gradientColors,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF9C27B0).withValues(alpha: 0.4),
+            color: shadowColor.withValues(alpha: 0.4),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),

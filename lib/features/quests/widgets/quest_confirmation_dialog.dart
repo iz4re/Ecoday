@@ -11,6 +11,7 @@ class QuestConfirmationDialog extends StatefulWidget {
     required this.xpReward,
     required this.hasPhoto,
     required this.isWeekly,
+    this.onCompleted,
   });
 
   final String questTitle;
@@ -20,6 +21,7 @@ class QuestConfirmationDialog extends StatefulWidget {
   final int xpReward;
   final bool hasPhoto;
   final bool isWeekly;
+  final VoidCallback? onCompleted;
 
   @override
   State<QuestConfirmationDialog> createState() => _QuestConfirmationDialogState();
@@ -438,13 +440,8 @@ class _QuestConfirmationDialogState extends State<QuestConfirmationDialog> {
             onPressed: _canSubmit
                 ? () {
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Quest "${widget.questTitle}" berhasil diselesaikan! +${widget.xpReward} XP'),
-                        backgroundColor: AppTheme.secondaryGreen,
-                        duration: const Duration(seconds: 3),
-                      ),
-                    );
+                    // Trigger XP reward callback
+                    widget.onCompleted?.call();
                   }
                 : null,
             style: ElevatedButton.styleFrom(

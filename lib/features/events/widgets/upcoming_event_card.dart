@@ -149,11 +149,14 @@ class UpcomingEventCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  ...rewards.map((emoji) => Padding(
+                  ...rewards.map((reward) => Padding(
                         padding: const EdgeInsets.only(left: 4),
                         child: Text(
-                          emoji,
-                          style: const TextStyle(fontSize: 18),
+                          reward,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF6B7A7B),
+                          ),
                         ),
                       )),
                 ],

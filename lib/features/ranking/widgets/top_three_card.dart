@@ -20,6 +20,9 @@ class TopThreeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get initials from name
+    String initials = name.split(' ').map((n) => n[0]).take(2).join();
+    
     return Container(
       width: 110,
       padding: const EdgeInsets.all(10),
@@ -60,9 +63,27 @@ class TopThreeCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
-            '😊',
-            style: TextStyle(fontSize: 22),
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [medalColor.withValues(alpha: 0.8), medalColor],
+                begin: Alignment.topLeft,
+                end:Alignment.bottomRight,
+              ),
+            ),
+            child: Center(
+              child: Text(
+                initials,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 8),
           Text(

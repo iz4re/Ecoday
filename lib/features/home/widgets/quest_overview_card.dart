@@ -4,15 +4,15 @@ import '../../../core/theme/app_theme.dart';
 class QuestOverviewCard extends StatelessWidget {
   const QuestOverviewCard({
     super.key,
-    required this.icon,
-    required this.iconColor,
+    this.icon,
+    this.iconColor,
     required this.title,
     required this.progress,
     this.isActive = false,
   });
 
-  final IconData icon;
-  final Color iconColor;
+  final IconData? icon;
+  final Color? iconColor;
   final String title;
   final String progress;
   final bool isActive;
@@ -39,12 +39,14 @@ class QuestOverviewCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                icon,
-                color: isActive ? iconColor.withValues(alpha: 0.7) : iconColor,
-                size: 12,
-              ),
-              const SizedBox(width: 6),
+              if (icon != null && iconColor != null) ...[
+                Icon(
+                  icon,
+                  color: isActive ? iconColor!.withValues(alpha: 0.7) : iconColor,
+                  size: 12,
+                ),
+                const SizedBox(width: 6),
+              ],
               Expanded(
                 child: Text(
                   title,

@@ -56,10 +56,6 @@ class EventScreen extends StatelessWidget {
                   color: Color(0xFF1F2E2B),
                 ),
               ),
-              Text(
-                '🎯',
-                style: TextStyle(fontSize: 20),
-              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -119,10 +115,6 @@ class EventScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: const [
-              Text(
-                '🔥',
-                style: TextStyle(fontSize: 16),
-              ),
               SizedBox(width: 8),
               Text(
                 'Event Aktif (8)',
@@ -186,10 +178,6 @@ class EventScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: const [
-              Text(
-                '📅',
-                style: TextStyle(fontSize: 16),
-              ),
               SizedBox(width: 8),
               Text(
                 'Event Mendatang (4)',
@@ -230,7 +218,7 @@ class EventScreen extends StatelessWidget {
             description: 'Tanam sayuran sendiri di rumah! Food security dimulai dari diri sendiri!',
             startDate: '5 Desember',
             rewardCount: 2,
-            rewards: ['🎁', '🥬'],
+            rewards: ['Pot Tanaman', 'Baju'],
             isComingSoon: true,
           ),
         ),
@@ -242,7 +230,7 @@ class EventScreen extends StatelessWidget {
             description: 'Fast fashion OUT! Thrifting IN! Tampil keren dengan fashion berkelanjutan!',
             startDate: '8 Desember',
             rewardCount: 2,
-            rewards: ['🎁', '👕'],
+            rewards: ['Baju', 'Celana'],
             isComingSoon: true,
           ),
         ),

@@ -89,11 +89,7 @@ class _AuthScreenState extends State<AuthScreen> {
           width: 84,
           height: 84,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [AppTheme.secondaryGreen, AppTheme.primaryGreen],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
@@ -103,7 +99,13 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
             ],
           ),
-          child: const Icon(Icons.eco_outlined, color: Colors.white, size: 42),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Image.asset(
+              'assets/images/logo.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
         const SizedBox(height: 18),
         Text(

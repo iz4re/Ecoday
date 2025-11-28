@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_theme.dart';
+import '../profile/profile_screen.dart';
 import '../ranking/ranking_screen.dart';
 import '../events/event_screen.dart';
 import '../rewards/reward_screen.dart';
+import 'widgets/level_card.dart';
+import 'widgets/quest_overview_card.dart';
+import 'widgets/stat_card.dart';
 import '../quests/widgets/quest_card.dart';
 import '../quests/widgets/tips_quest_card.dart';
-import 'widgets/level_card.dart';
-import 'widgets/stat_card.dart';
-import 'widgets/quest_overview_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,21 +21,54 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   String _selectedQuestType = 'harian'; // 'harian' or 'mingguan'
+  int _currentXP = 0;
+  int _completedQuestsToday = 0;
+  final int _maxXP = 100;
+  final int _currentLevel = 1;
+
+  void _onQuestCompleted(int xpReward) {
+    setState(() {
+      _currentXP += xpReward;
+      _completedQuestsToday++;
+      
+      // Check for level up
+      if (_currentXP >= _maxXP) {
+        // Handle level up (for now just cap at max)
+        _currentXP = _maxXP;
+      }
+    });
+    
+    // Show success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Quest selesai! +$xpReward XP'),
+        backgroundColor: AppTheme.secondaryGreen,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    Widget currentScreen;
+    if (_currentIndex == 0) {
+      currentScreen = _buildHomeContent();
+    } else if (_currentIndex == 1) {
+      currentScreen = const RankingScreen();
+    } else if (_currentIndex == 2) {
+      currentScreen = const EventScreen();
+    } else if (_currentIndex == 3) {
+      currentScreen = const RewardScreen();
+    } else if (_currentIndex == 4) {
+      currentScreen = const ProfileScreen();
+    } else {
+      currentScreen = _buildPlaceholder();
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF0FAF6),
       body: SafeArea(
-        child: _currentIndex == 0
-            ? _buildHomeContent()
-            : _currentIndex == 1
-                ? const RankingScreen()
-                : _currentIndex == 2
-                    ? const EventScreen()
-                    : _currentIndex == 3
-                        ? const RewardScreen()
-                        : _buildPlaceholder(),
+        child: currentScreen,
       ),
       bottomNavigationBar: _buildBottomNavBar(),
     );
@@ -47,43 +82,43 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           _buildHeader(),
           const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: LevelCard(
-              level: 1,
+              level: _currentLevel,
               levelTitle: 'Eco Newbie',
-              currentXP: 0,
-              maxXP: 100,
+              currentXP: _currentXP,
+              maxXP: _maxXP,
             ),
           ),
           const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 Expanded(
                   child: StatCard(
                     icon: Icons.star_border,
                     iconColor: AppTheme.secondaryGreen,
-                    value: '0',
+                    value: '$_currentXP',
                     label: 'Total XP',
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: StatCard(
                     icon: Icons.local_fire_department_outlined,
-                    iconColor: Color(0xFFFF9E5A),
+                    iconColor: const Color(0xFFFF9E5A),
                     value: '0',
                     label: 'Streak',
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: StatCard(
                     icon: Icons.track_changes,
-                    iconColor: Color(0xFF5A9BFF),
-                    value: '0',
+                    iconColor: const Color(0xFF5A9BFF),
+                    value: '$_completedQuestsToday',
                     label: 'Hari ini',
                   ),
                 ),
@@ -103,8 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                     child: QuestOverviewCard(
-                      icon: Icons.circle,
-                      iconColor: Color(0xFFFF6B6B),
                       title: 'Quest Harian',
                       progress: '0/8 selesai',
                       isActive: _selectedQuestType == 'harian',
@@ -120,8 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                     child: QuestOverviewCard(
-                      icon: Icons.calendar_today,
-                      iconColor: Color(0xFF5A9BFF),
                       title: 'Quest Mingguan',
                       progress: '0/5 progress',
                       isActive: _selectedQuestType == 'mingguan',
@@ -147,48 +178,51 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> _buildDailyQuests() {
-    return const [
+    return [
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.coffee_outlined,
-          iconColor: Color(0xFFE91E63),
+          iconColor: const Color(0xFFE91E63),
           title: 'Bawa Tumbler',
           description: 'Gunakan tumbler hari ini',
           questType: 'Harian',
           xpReward: 15,
           hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(15),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.lightbulb_outline,
-          iconColor: Color(0xFFFFC857),
+          iconColor: const Color(0xFFFFC857),
           title: 'Matikan Lampu',
           description: 'Matikan lampu yang tidak terpakai',
           questType: 'Harian',
           xpReward: 10,
-          hasPhoto: false,
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(10),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.bolt_outlined,
-          iconColor: Color(0xFFFF9E5A),
+          iconColor: const Color(0xFFFF9E5A),
           title: 'Hemat Listrik 30 Menit',
           description: 'Cabut charger & matikan perangkat tidak terpakai',
           questType: 'Harian',
           xpReward: 20,
-          hasPhoto: false,
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(20),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.recycling,
           iconColor: AppTheme.secondaryGreen,
@@ -197,67 +231,72 @@ class _HomeScreenState extends State<HomeScreen> {
           questType: 'Harian',
           xpReward: 15,
           hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(15),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.water_drop_outlined,
-          iconColor: Color(0xFF5A9BFF),
+          iconColor: const Color(0xFF5A9BFF),
           title: 'Hemat Air',
           description: 'Kurangi waktu mandi 5 menit',
           questType: 'Harian',
           xpReward: 15,
-          hasPhoto: false,
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(15),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.shopping_bag_outlined,
-          iconColor: Color(0xFF5A9BFF),
+          iconColor: const Color(0xFF5A9BFF),
           title: 'Tas Belanja Sendiri',
           description: 'Bawa tas belanja reusable',
           questType: 'Harian',
           xpReward: 10,
-          hasPhoto: false,
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(10),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.directions_walk,
-          iconColor: Color(0xFFFF9E5A),
+          iconColor: const Color(0xFFFF9E5A),
           title: 'Jalan Kaki',
           description: 'Pilih jalan kaki untuk jarak dekat',
           questType: 'Harian',
           xpReward: 25,
-          hasPhoto: false,
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(25),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.do_not_disturb_on_outlined,
-          iconColor: Color(0xFFFF6B6B),
+          iconColor: const Color(0xFFFF6B6B),
           title: 'Tolak Sedotan Plastik',
           description: 'Katakan tidak pada sedotan plastik',
           questType: 'Harian',
           xpReward: 10,
-          hasPhoto: false,
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(10),
         ),
       ),
     ];
   }
 
   List<Widget> _buildWeeklyQuests() {
-    return const [
+    return [
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.eco_outlined,
           iconColor: AppTheme.secondaryGreen,
@@ -265,41 +304,44 @@ class _HomeScreenState extends State<HomeScreen> {
           description: 'Tidak membeli produk dengan plastik sekali pakai selama 7 hari',
           questType: 'Mingguan',
           xpReward: 50,
-          hasPhoto: false,
+          hasPhoto: true,
           isWeekly: true,
+          onCompleted: () => _onQuestCompleted(50),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.shopping_bag,
-          iconColor: Color(0xFF5A9BFF),
+          iconColor: const Color(0xFF5A9BFF),
           title: 'Bawa Tas Belanja Konsisten',
           description: 'Gunakan tas belanja reusable setiap berbelanja selama seminggu',
           questType: 'Mingguan',
           xpReward: 40,
-          hasPhoto: false,
+          hasPhoto: true,
           isWeekly: true,
+          onCompleted: () => _onQuestCompleted(40),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.local_shipping_outlined,
-          iconColor: Color(0xFFFF9E5A),
+          iconColor: const Color(0xFFFF9E5A),
           title: 'Kurangi Kendaraan Bermotor',
           description: 'Gunakan transportasi umum/sepeda minimal 5x seminggu',
           questType: 'Mingguan',
           xpReward: 60,
-          hasPhoto: false,
+          hasPhoto: true,
           isWeekly: true,
+          onCompleted: () => _onQuestCompleted(60),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.delete_outline,
           iconColor: AppTheme.secondaryGreen,
@@ -309,20 +351,22 @@ class _HomeScreenState extends State<HomeScreen> {
           xpReward: 80,
           hasPhoto: true,
           isWeekly: true,
+          onCompleted: () => _onQuestCompleted(80),
         ),
       ),
-      SizedBox(height: 12),
+      const SizedBox(height: 12),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: QuestCard(
           icon: Icons.restaurant_outlined,
-          iconColor: Color(0xFFE91E63),
+          iconColor: const Color(0xFFE91E63),
           title: 'Kurangi Food Waste',
           description: 'Habiskan makanan tanpa sisa selama 7 hari berturut-turut',
           questType: 'Mingguan',
           xpReward: 45,
-          hasPhoto: false,
+          hasPhoto: true,
           isWeekly: true,
+          onCompleted: () => _onQuestCompleted(45),
         ),
       ),
     ];
@@ -346,7 +390,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: AppTheme.primaryGreen,
                         ),
                   ),
-                  const Text('👋', style: TextStyle(fontSize: 24)),
                 ],
               ),
               const SizedBox(height: 4),

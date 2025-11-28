@@ -14,6 +14,7 @@ class QuestCard extends StatelessWidget {
     required this.xpReward,
     this.hasPhoto = false,
     this.isWeekly = false,
+    this.onCompleted,
   });
 
   final IconData icon;
@@ -24,6 +25,7 @@ class QuestCard extends StatelessWidget {
   final int xpReward;
   final bool hasPhoto;
   final bool isWeekly;
+  final VoidCallback? onCompleted;
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +186,7 @@ class QuestCard extends StatelessWidget {
                     xpReward: xpReward,
                     hasPhoto: hasPhoto,
                     isWeekly: isWeekly,
+                    onCompleted: onCompleted,
                   ),
                 );
               },

@@ -49,8 +49,6 @@ class _VoucherCardState extends State<VoucherCard> {
       SnackBar(
         content: Row(
           children: const [
-            Text('✅', style: TextStyle(fontSize: 18)),
-            SizedBox(width: 8),
             Text('🎉', style: TextStyle(fontSize: 18)),
             SizedBox(width: 8),
             Expanded(
@@ -126,19 +124,7 @@ class _VoucherCardState extends State<VoucherCard> {
             children: [
               Row(
                 children: const [
-                  Text(
-                    '🎫',
-                    style: TextStyle(fontSize: 20),
-                  ),
                   SizedBox(width: 8),
-                  Text(
-                    'Voucher',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
                 ],
               ),
               if (_isClaimed)
@@ -238,10 +224,6 @@ class _VoucherCardState extends State<VoucherCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Text(
-                      '🎁',
-                      style: TextStyle(fontSize: 16),
-                    ),
                     SizedBox(width: 8),
                     Text(
                       'Claim Voucher',
