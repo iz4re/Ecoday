@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../ranking/ranking_screen.dart';
+import '../events/event_screen.dart';
+import '../rewards/reward_screen.dart';
 import '../quests/widgets/quest_card.dart';
 import '../quests/widgets/tips_quest_card.dart';
 import 'widgets/level_card.dart';
@@ -22,7 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF0FAF6),
       body: SafeArea(
-        child: _currentIndex == 0 ? _buildHomeContent() : _buildPlaceholder(),
+        child: _currentIndex == 0
+            ? _buildHomeContent()
+            : _currentIndex == 1
+                ? const RankingScreen()
+                : _currentIndex == 2
+                    ? const EventScreen()
+                    : _currentIndex == 3
+                        ? const RewardScreen()
+                        : _buildPlaceholder(),
       ),
       bottomNavigationBar: _buildBottomNavBar(),
     );
