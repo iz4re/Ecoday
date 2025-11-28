@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_theme.dart';
 
 class EcoPrimaryButton extends StatelessWidget {
-  const EcoPrimaryButton({super.key, required this.label, this.icon});
+  const EcoPrimaryButton({
+    super.key,
+    required this.label,
+    this.icon,
+    this.onPressed,
+  });
 
   final String label;
   final IconData? icon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,7 @@ class EcoPrimaryButton extends StatelessWidget {
       child: SizedBox(
         height: 54,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             elevation: 0,
             backgroundColor: Colors.transparent,

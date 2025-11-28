@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../home/home_screen.dart';
 import 'widgets/eco_input_field.dart';
 import 'widgets/eco_primary_button.dart';
 import 'widgets/info_pill.dart';
@@ -285,7 +286,18 @@ class _LoginForm extends StatelessWidget {
           obscure: true,
         ),
         const SizedBox(height: 24),
-        const Center(child: EcoPrimaryButton(label: 'Masuk ke Akun', icon: Icons.eco)),
+        Center(
+          child: EcoPrimaryButton(
+            label: 'Masuk ke Akun',
+            icon: Icons.eco,
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
+          ),
+        ),
         const SizedBox(height: 18),
         const InfoPill(
           title: 'Database Mode',
@@ -303,50 +315,56 @@ class _RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        EcoInputField(
+      children: [
+        const EcoInputField(
           label: 'Nama Lengkap',
           hint: 'Masukkan nama lengkap',
           icon: Icons.person_outline,
         ),
-        SizedBox(height: 16),
-        EcoInputField(
+        const SizedBox(height: 16),
+        const EcoInputField(
           label: 'Username',
           hint: 'username_unik',
           icon: Icons.alternate_email,
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(top: 6),
           child: Text(
             '3-20 karakter, huruf, angka, dan underscore',
             style: TextStyle(color: AppTheme.textMuted, fontSize: 12),
           ),
         ),
-        SizedBox(height: 16),
-        EcoInputField(
+        const SizedBox(height: 16),
+        const EcoInputField(
           label: 'Email',
           hint: 'email@example.com',
           icon: Icons.mail_outline,
         ),
-        SizedBox(height: 16),
-        EcoInputField(
+        const SizedBox(height: 16),
+        const EcoInputField(
           label: 'Password',
           hint: 'Minimal 6 karakter',
           icon: Icons.lock_outline,
           obscure: true,
         ),
-        SizedBox(height: 16),
-        EcoInputField(
+        const SizedBox(height: 16),
+        const EcoInputField(
           label: 'Konfirmasi Password',
           hint: 'Ulangi password',
           icon: Icons.lock_reset,
           obscure: true,
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         Center(
           child: EcoPrimaryButton(
             label: 'Mulai Petualangan Eco',
             icon: Icons.auto_awesome,
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
           ),
         ),
       ],
