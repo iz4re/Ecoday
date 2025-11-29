@@ -146,13 +146,33 @@ class RewardScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: BadgeCard(
-            emoji: '🎉',
-            badgeName: 'Welcome Badge',
-            description: 'Joined EcoDay',
-            dateEarned: '28/11/2025',
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: const [
+              BadgeCard(
+                emoji: '🎉',
+                badgeName: 'Welcome Badge',
+                description: 'Joined EcoDay',
+                dateEarned: '28/11/2025',
+              ),
+              SizedBox(width: 12),
+              BadgeCard(
+                emoji: '🌱',
+                badgeName: 'First Quest',
+                description: 'Completed 1st quest',
+                dateEarned: '29/11/2025',
+              ),
+              SizedBox(width: 12),
+              BadgeCard(
+                emoji: '🔥',
+                badgeName: 'On Fire',
+                description: '3 day streak',
+                dateEarned: 'Locked',
+                isLocked: true,
+              ),
+            ],
           ),
         ),
       ],
@@ -195,6 +215,24 @@ class RewardScreen extends StatelessWidget {
             title: 'Diskon 25% Eco Product',
             description: 'Berlaku untuk semua produk ramah lingkungan',
             expiryDate: '2025-12-15',
+          ),
+        ),
+        const SizedBox(height: 12),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: VoucherCard(
+            title: 'Tiket Nonton Bioskop',
+            description: 'Gratis 1 tiket nonton di XXI',
+            expiryDate: '2025-12-20',
+          ),
+        ),
+        const SizedBox(height: 12),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: VoucherCard(
+            title: 'Donasi Pohon (WWF)',
+            description: 'Donasi 1 pohon atas nama Anda',
+            expiryDate: 'Selamanya',
           ),
         ),
         const SizedBox(height: 12),

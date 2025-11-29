@@ -10,6 +10,7 @@ import 'widgets/quest_overview_card.dart';
 import 'widgets/stat_card.dart';
 import '../quests/widgets/quest_card.dart';
 import '../quests/widgets/tips_quest_card.dart';
+import '../../core/widgets/empty_state_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.username});
@@ -180,198 +181,163 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> _buildDailyQuests() {
-    return [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.coffee_outlined,
-          iconColor: const Color(0xFFE91E63),
-          title: 'Bawa Tumbler',
-          description: 'Gunakan tumbler hari ini',
-          questType: 'Harian',
-          xpReward: 15,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(15),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.lightbulb_outline,
-          iconColor: const Color(0xFFFFC857),
-          title: 'Matikan Lampu',
-          description: 'Matikan lampu yang tidak terpakai',
-          questType: 'Harian',
-          xpReward: 10,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(10),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.bolt_outlined,
-          iconColor: const Color(0xFFFF9E5A),
-          title: 'Hemat Listrik 30 Menit',
-          description: 'Cabut charger & matikan perangkat tidak terpakai',
-          questType: 'Harian',
-          xpReward: 20,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(20),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.recycling,
-          iconColor: AppTheme.secondaryGreen,
-          title: 'Pilah Sampah',
-          description: 'Pisahkan sampah organik dan anorganik',
-          questType: 'Harian',
-          xpReward: 15,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(15),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.water_drop_outlined,
-          iconColor: const Color(0xFF5A9BFF),
-          title: 'Hemat Air',
-          description: 'Kurangi waktu mandi 5 menit',
-          questType: 'Harian',
-          xpReward: 15,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(15),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.shopping_bag_outlined,
-          iconColor: const Color(0xFF5A9BFF),
-          title: 'Tas Belanja Sendiri',
-          description: 'Bawa tas belanja reusable',
-          questType: 'Harian',
-          xpReward: 10,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(10),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.directions_walk,
-          iconColor: const Color(0xFFFF9E5A),
-          title: 'Jalan Kaki',
-          description: 'Pilih jalan kaki untuk jarak dekat',
-          questType: 'Harian',
-          xpReward: 25,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(25),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.do_not_disturb_on_outlined,
-          iconColor: const Color(0xFFFF6B6B),
-          title: 'Tolak Sedotan Plastik',
-          description: 'Katakan tidak pada sedotan plastik',
-          questType: 'Harian',
-          xpReward: 10,
-          hasPhoto: true,
-          onCompleted: () => _onQuestCompleted(10),
-        ),
-      ),
+    final List<Map<String, dynamic>> quests = [
+      {
+        'icon': Icons.coffee_outlined,
+        'iconColor': const Color(0xFFE91E63),
+        'title': 'Bawa Tumbler',
+        'description': 'Gunakan tumbler hari ini',
+        'xpReward': 15,
+      },
+      {
+        'icon': Icons.lightbulb_outline,
+        'iconColor': const Color(0xFFFFC857),
+        'title': 'Matikan Lampu',
+        'description': 'Matikan lampu yang tidak terpakai',
+        'xpReward': 10,
+      },
+      {
+        'icon': Icons.bolt_outlined,
+        'iconColor': const Color(0xFFFF9E5A),
+        'title': 'Hemat Listrik 30 Menit',
+        'description': 'Cabut charger & matikan perangkat tidak terpakai',
+        'xpReward': 20,
+      },
+      {
+        'icon': Icons.recycling,
+        'iconColor': AppTheme.secondaryGreen,
+        'title': 'Pilah Sampah',
+        'description': 'Pisahkan sampah organik dan anorganik',
+        'xpReward': 15,
+      },
+      {
+        'icon': Icons.water_drop_outlined,
+        'iconColor': const Color(0xFF5A9BFF),
+        'title': 'Hemat Air',
+        'description': 'Kurangi waktu mandi 5 menit',
+        'xpReward': 15,
+      },
+      {
+        'icon': Icons.shopping_bag_outlined,
+        'iconColor': const Color(0xFF5A9BFF),
+        'title': 'Tas Belanja Sendiri',
+        'description': 'Bawa tas belanja reusable',
+        'xpReward': 10,
+      },
+      {
+        'icon': Icons.directions_walk,
+        'iconColor': const Color(0xFFFF9E5A),
+        'title': 'Jalan Kaki',
+        'description': 'Pilih jalan kaki untuk jarak dekat',
+        'xpReward': 25,
+      },
+      {
+        'icon': Icons.do_not_disturb_on_outlined,
+        'iconColor': const Color(0xFFFF6B6B),
+        'title': 'Tolak Sedotan Plastik',
+        'description': 'Katakan tidak pada sedotan plastik',
+        'xpReward': 10,
+      },
     ];
+
+    if (quests.isEmpty) {
+      return [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: EmptyStateWidget(
+            icon: Icons.check_circle_outline,
+            message: 'Semua quest harian selesai!',
+            subMessage: 'Kembali lagi besok untuk quest baru.',
+          ),
+        ),
+      ];
+    }
+
+    return quests.map((quest) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
+        child: QuestCard(
+          icon: quest['icon'],
+          iconColor: quest['iconColor'],
+          title: quest['title'],
+          description: quest['description'],
+          questType: 'Harian',
+          xpReward: quest['xpReward'],
+          hasPhoto: true,
+          onCompleted: () => _onQuestCompleted(quest['xpReward']),
+        ),
+      );
+    }).toList();
   }
 
   List<Widget> _buildWeeklyQuests() {
-    return [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.eco_outlined,
-          iconColor: AppTheme.secondaryGreen,
-          title: 'Bebas Plastik Sekali Pakai',
-          description: 'Tidak membeli produk dengan plastik sekali pakai selama 7 hari',
-          questType: 'Mingguan',
-          xpReward: 50,
-          hasPhoto: true,
-          isWeekly: true,
-          onCompleted: () => _onQuestCompleted(50),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.shopping_bag,
-          iconColor: const Color(0xFF5A9BFF),
-          title: 'Bawa Tas Belanja Konsisten',
-          description: 'Gunakan tas belanja reusable setiap berbelanja selama seminggu',
-          questType: 'Mingguan',
-          xpReward: 40,
-          hasPhoto: true,
-          isWeekly: true,
-          onCompleted: () => _onQuestCompleted(40),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.local_shipping_outlined,
-          iconColor: const Color(0xFFFF9E5A),
-          title: 'Kurangi Kendaraan Bermotor',
-          description: 'Gunakan transportasi umum/sepeda minimal 5x seminggu',
-          questType: 'Mingguan',
-          xpReward: 60,
-          hasPhoto: true,
-          isWeekly: true,
-          onCompleted: () => _onQuestCompleted(60),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.delete_outline,
-          iconColor: AppTheme.secondaryGreen,
-          title: 'Setor Bank Sampah',
-          description: 'Kumpulkan dan setor sampah daur ulang ke bank sampah',
-          questType: 'Mingguan',
-          xpReward: 80,
-          hasPhoto: true,
-          isWeekly: true,
-          onCompleted: () => _onQuestCompleted(80),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: QuestCard(
-          icon: Icons.restaurant_outlined,
-          iconColor: const Color(0xFFE91E63),
-          title: 'Kurangi Food Waste',
-          description: 'Habiskan makanan tanpa sisa selama 7 hari berturut-turut',
-          questType: 'Mingguan',
-          xpReward: 45,
-          hasPhoto: true,
-          isWeekly: true,
-          onCompleted: () => _onQuestCompleted(45),
-        ),
-      ),
+    final List<Map<String, dynamic>> quests = [
+      {
+        'icon': Icons.eco_outlined,
+        'iconColor': AppTheme.secondaryGreen,
+        'title': 'Bebas Plastik Sekali Pakai',
+        'description': 'Tidak membeli produk dengan plastik sekali pakai selama 7 hari',
+        'xpReward': 50,
+      },
+      {
+        'icon': Icons.shopping_bag,
+        'iconColor': const Color(0xFF5A9BFF),
+        'title': 'Bawa Tas Belanja Konsisten',
+        'description': 'Gunakan tas belanja reusable setiap berbelanja selama seminggu',
+        'xpReward': 40,
+      },
+      {
+        'icon': Icons.local_shipping_outlined,
+        'iconColor': const Color(0xFFFF9E5A),
+        'title': 'Kurangi Kendaraan Bermotor',
+        'description': 'Gunakan transportasi umum/sepeda minimal 5x seminggu',
+        'xpReward': 60,
+      },
+      {
+        'icon': Icons.delete_outline,
+        'iconColor': AppTheme.secondaryGreen,
+        'title': 'Setor Bank Sampah',
+        'description': 'Kumpulkan dan setor sampah daur ulang ke bank sampah',
+        'xpReward': 80,
+      },
+      {
+        'icon': Icons.restaurant_outlined,
+        'iconColor': const Color(0xFFE91E63),
+        'title': 'Kurangi Food Waste',
+        'description': 'Habiskan makanan tanpa sisa selama 7 hari berturut-turut',
+        'xpReward': 45,
+      },
     ];
+
+    if (quests.isEmpty) {
+      return [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: EmptyStateWidget(
+            icon: Icons.calendar_today,
+            message: 'Belum ada quest mingguan',
+            subMessage: 'Cek lagi nanti untuk tantangan baru!',
+          ),
+        ),
+      ];
+    }
+
+    return quests.map((quest) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
+        child: QuestCard(
+          icon: quest['icon'],
+          iconColor: quest['iconColor'],
+          title: quest['title'],
+          description: quest['description'],
+          questType: 'Mingguan',
+          xpReward: quest['xpReward'],
+          hasPhoto: true,
+          isWeekly: true,
+          onCompleted: () => _onQuestCompleted(quest['xpReward']),
+        ),
+      );
+    }).toList();
   }
 
   Widget _buildHeader() {

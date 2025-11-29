@@ -3,6 +3,7 @@ import '../../core/theme/app_theme.dart';
 import 'widgets/event_progress_card.dart';
 import 'widgets/event_quest_card.dart';
 import 'widgets/event_leaderboard_card.dart';
+import '../../core/widgets/empty_state_widget.dart';
 
 class EventProgressScreen extends StatefulWidget {
   const EventProgressScreen({
@@ -204,6 +205,50 @@ class _EventProgressScreenState extends State<EventProgressScreen> {
   }
 
   Widget _buildQuestSection() {
+    // Dummy data for quests
+    final List<Map<String, dynamic>> quests = [
+      {
+        'icon': '🥤',
+        'title': 'Bawa Tumbler',
+        'description': 'Gunakan tumbler hari ini',
+        'xp': 15,
+        'tag': 'Harian',
+        'category': 'Reduce Plastic',
+        'tagColor': const Color(0xFFFF9500),
+        'hasUpload': true,
+      },
+      {
+        'icon': '🛍️',
+        'title': 'Tas Belanja Sendiri',
+        'description': 'Bawa tas belanja reusable',
+        'xp': 10,
+        'tag': 'Harian',
+        'category': 'Reduce Plastic',
+        'tagColor': const Color(0xFF0ABF8A),
+        'hasUpload': true,
+      },
+      {
+        'icon': '🚫',
+        'title': 'Tolak Sedotan Plastik',
+        'description': 'Katakan tidak pada sedotan plastik',
+        'xp': 10,
+        'tag': 'Harian',
+        'category': 'Reduce Plastic',
+        'tagColor': const Color(0xFF0ABF8A),
+        'hasUpload': true,
+      },
+      {
+        'icon': '🌱',
+        'title': 'Bebas Plastik Sekali Pakai',
+        'description': 'Tidak membeli produk dengan plastik sekali pakai selama 7 hari',
+        'xp': 80,
+        'tag': 'Mingguan',
+        'category': 'Reduce Plastic',
+        'tagColor': const Color(0xFF5A9BFF),
+        'hasUpload': true,
+      },
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,53 +270,33 @@ class _EventProgressScreenState extends State<EventProgressScreen> {
           ],
         ),
         const SizedBox(height: 12),
-        EventQuestCard(
-          icon: '🥤',
-          title: 'Bawa Tumbler',
-          description: 'Gunakan tumbler hari ini',
-          xp: 15,
-          tag: 'Harian',
-          category: 'Reduce Plastic',
-          tagColor: const Color(0xFFFF9500),
-          hasUpload: true,
-          onCompleted: _onQuestCompleted,
-        ),
-        const SizedBox(height: 12),
-        EventQuestCard(
-          icon: '🛍️',
-          title: 'Tas Belanja Sendiri',
-          description: 'Bawa tas belanja reusable',
-          xp: 10,
-          tag: 'Harian',
-          category: 'Reduce Plastic',
-          tagColor: const Color(0xFF0ABF8A),
-          hasUpload: true,
-          onCompleted: _onQuestCompleted,
-        ),
-        const SizedBox(height: 12),
-        EventQuestCard(
-          icon: '🚫',
-          title: 'Tolak Sedotan Plastik',
-          description: 'Katakan tidak pada sedotan plastik',
-          xp: 10,
-          tag: 'Harian',
-          category: 'Reduce Plastic',
-          tagColor: const Color(0xFF0ABF8A),
-          hasUpload: true,
-          onCompleted: _onQuestCompleted,
-        ),
-        const SizedBox(height: 12),
-        EventQuestCard(
-          icon: '🌱',
-          title: 'Bebas Plastik Sekali Pakai',
-          description: 'Tidak membeli produk dengan plastik sekali pakai selama 7 hari',
-          xp: 80,
-          tag: 'Mingguan',
-          category: 'Reduce Plastic',
-          tagColor: const Color(0xFF5A9BFF),
-          hasUpload: true,
-          onCompleted: _onQuestCompleted,
-        ),
+        if (quests.isEmpty)
+          const EmptyStateWidget(
+            icon: Icons.assignment_turned_in_outlined,
+            message: 'Belum ada quest tersedia',
+            subMessage: 'Nantikan quest seru lainnya segera!',
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: quests.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final quest = quests[index];
+              return EventQuestCard(
+                icon: quest['icon'],
+                title: quest['title'],
+                description: quest['description'],
+                xp: quest['xp'],
+                tag: quest['tag'],
+                category: quest['category'],
+                tagColor: quest['tagColor'],
+                hasUpload: quest['hasUpload'],
+                onCompleted: _onQuestCompleted,
+              );
+            },
+          ),
       ],
     );
   }

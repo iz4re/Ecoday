@@ -4,6 +4,7 @@ import 'widgets/event_stat_card.dart';
 import 'widgets/active_event_card.dart';
 import 'widgets/upcoming_event_card.dart';
 import 'widgets/how_it_works_card.dart';
+import '../../core/widgets/empty_state_widget.dart';
 
 class EventScreen extends StatelessWidget {
   const EventScreen({super.key});
@@ -108,17 +109,37 @@ class EventScreen extends StatelessWidget {
   }
 
   Widget _buildActiveEventsSection() {
+    final List<Map<String, dynamic>> activeEvents = [
+      {
+        'title': 'EcoWeek: Reduce Plastic Challenge',
+        'description': 'Kurangi plastik selama 7 hari! Top 3 dapat tumbler premium gratis!',
+        'daysLeft': 3,
+        'rewardCount': 2,
+        'questCount': 4,
+        'isJoined': true,
+        'isEndingSoon': true,
+      },
+      {
+        'title': 'Zero Waste Weekend',
+        'description': '48 jam tanpa sampah! Buktikan kamu bisa hidup tanpa waste!',
+        'daysLeft': 2,
+        'rewardCount': 2,
+        'questCount': 6,
+        'isEndingSoon': true,
+      },
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
-            children: const [
-              SizedBox(width: 8),
+            children: [
+              const SizedBox(width: 8),
               Text(
-                'Event Aktif (8)',
-                style: TextStyle(
+                'Event Aktif (${activeEvents.length})',
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1F2E2B),
@@ -128,30 +149,34 @@ class EventScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: ActiveEventCard(
-            title: 'EcoWeek: Reduce Plastic Challenge',
-            description: 'Kurangi plastik selama 7 hari! Top 3 dapat tumbler premium gratis!',
-            daysLeft: 3,
-            rewardCount: 2,
-            questCount: 4,
-            isJoined: true,
-            isEndingSoon: true,
+        if (activeEvents.isEmpty)
+          const EmptyStateWidget(
+            icon: Icons.event_busy,
+            message: 'Tidak ada event aktif saat ini',
+            subMessage: 'Nantikan event seru berikutnya!',
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: activeEvents.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final event = activeEvents[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ActiveEventCard(
+                  title: event['title'],
+                  description: event['description'],
+                  daysLeft: event['daysLeft'],
+                  rewardCount: event['rewardCount'],
+                  questCount: event['questCount'],
+                  isJoined: event['isJoined'] ?? false,
+                  isEndingSoon: event['isEndingSoon'] ?? false,
+                ),
+              );
+            },
           ),
-        ),
-        const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: ActiveEventCard(
-            title: 'Zero Waste Weekend',
-            description: '48 jam tanpa sampah! Buktikan kamu bisa hidup tanpa waste!',
-            daysLeft: 2,
-            rewardCount: 2,
-            questCount: 6,
-            isEndingSoon: true,
-          ),
-        ),
       ],
     );
   }
@@ -171,17 +196,48 @@ class EventScreen extends StatelessWidget {
   }
 
   Widget _buildUpcomingEventsSection() {
+    final List<Map<String, dynamic>> upcomingEvents = [
+      {
+        'title': 'Paperless December',
+        'description': 'Desember tanpa kertas! Digitalisasi semua dokumen!',
+        'startDate': 'Mulai 1 Desember',
+        'rewardCount': 2,
+      },
+      {
+        'title': 'Eco Shopping December',
+        'description': 'Belanja ramah lingkungan sepanjang Desember! Pilih produk sustainable!',
+        'startDate': 'Mulai 1 Desember',
+        'rewardCount': 2,
+      },
+      {
+        'title': 'Urban Farming Initiative',
+        'description': 'Tanam sayuran sendiri di rumah! Food security dimulai dari diri sendiri!',
+        'startDate': '5 Desember',
+        'rewardCount': 2,
+        'rewards': ['Pot Tanaman', 'Baju'],
+        'isComingSoon': true,
+      },
+      {
+        'title': 'Second Hand Fashion Week',
+        'description': 'Fast fashion OUT! Thrifting IN! Tampil keren dengan fashion berkelanjutan!',
+        'startDate': '8 Desember',
+        'rewardCount': 2,
+        'rewards': ['Baju', 'Celana'],
+        'isComingSoon': true,
+      },
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
-            children: const [
-              SizedBox(width: 8),
+            children: [
+              const SizedBox(width: 8),
               Text(
-                'Event Mendatang (4)',
-                style: TextStyle(
+                'Event Mendatang (${upcomingEvents.length})',
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1F2E2B),
@@ -191,49 +247,33 @@ class EventScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: UpcomingEventCard(
-            title: 'Paperless December',
-            description: 'Desember tanpa kertas! Digitalisasi semua dokumen!',
-            startDate: 'Mulai 1 Desember',
-            rewardCount: 2,
+        if (upcomingEvents.isEmpty)
+          const EmptyStateWidget(
+            icon: Icons.calendar_today,
+            message: 'Belum ada event mendatang',
+            subMessage: 'Cek lagi nanti ya!',
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: upcomingEvents.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final event = upcomingEvents[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: UpcomingEventCard(
+                  title: event['title'],
+                  description: event['description'],
+                  startDate: event['startDate'],
+                  rewardCount: event['rewardCount'],
+                  rewards: event['rewards'] != null ? List<String>.from(event['rewards']) : [],
+                  isComingSoon: event['isComingSoon'] ?? false,
+                ),
+              );
+            },
           ),
-        ),
-        const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: UpcomingEventCard(
-            title: 'Eco Shopping December',
-            description: 'Belanja ramah lingkungan sepanjang Desember! Pilih produk sustainable!',
-            startDate: 'Mulai 1 Desember',
-            rewardCount: 2,
-          ),
-        ),
-        const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: UpcomingEventCard(
-            title: 'Urban Farming Initiative',
-            description: 'Tanam sayuran sendiri di rumah! Food security dimulai dari diri sendiri!',
-            startDate: '5 Desember',
-            rewardCount: 2,
-            rewards: ['Pot Tanaman', 'Baju'],
-            isComingSoon: true,
-          ),
-        ),
-        const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: UpcomingEventCard(
-            title: 'Second Hand Fashion Week',
-            description: 'Fast fashion OUT! Thrifting IN! Tampil keren dengan fashion berkelanjutan!',
-            startDate: '8 Desember',
-            rewardCount: 2,
-            rewards: ['Baju', 'Celana'],
-            isComingSoon: true,
-          ),
-        ),
       ],
     );
   }

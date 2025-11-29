@@ -49,13 +49,20 @@ class EventProgressCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text(
-                  '$xpEarned',
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF9C27B0),
-                  ),
+                TweenAnimationBuilder<int>(
+                  tween: IntTween(begin: 0, end: xpEarned),
+                  duration: const Duration(milliseconds: 1500),
+                  curve: Curves.easeOutExpo,
+                  builder: (context, value, child) {
+                    return Text(
+                      '$value',
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF9C27B0),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 2),
                 const Text(

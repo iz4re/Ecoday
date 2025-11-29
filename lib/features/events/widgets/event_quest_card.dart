@@ -156,23 +156,14 @@ class _EventQuestCardState extends State<EventQuestCard> {
   }
 
   void _showApprovedMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: const Color(0xFF0ABF8A),
-        behavior: SnackBarBehavior.floating,
-        content: Row(
-          children: [
-            const Icon(Icons.verified, color: Colors.white),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                '✅ Quest disetujui! +${widget.xp} XP diterima 🎉',
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-        ),
-        duration: const Duration(seconds: 4),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => _SuccessDialog(
+        xpReward: widget.xp,
+        onClaim: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
@@ -813,6 +804,156 @@ class _QuestCompletionDialogState extends State<_QuestCompletionDialog> {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SuccessDialog extends StatefulWidget {
+  const _SuccessDialog({
+    required this.xpReward,
+    required this.onClaim,
+  });
+
+  final int xpReward;
+  final VoidCallback onClaim;
+
+  @override
+  State<_SuccessDialog> createState() => _SuccessDialogState();
+}
+
+class _SuccessDialogState extends State<_SuccessDialog> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _scaleAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.elasticOut,
+    );
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.all(24),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Trophy Icon with Glow
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFFD54F), Color(0xFFFFA000)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFFA000).withValues(alpha: 0.4),
+                      blurRadius: 30,
+                      spreadRadius: 5,
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Text(
+                    '🏆',
+                    style: TextStyle(fontSize: 50),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              
+              // Title
+              const Text(
+                'Quest Complete!',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1F2E2B),
+                ),
+              ),
+              const SizedBox(height: 8),
+              
+              // XP Reward
+              Text(
+                '+${widget.xpReward} XP',
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF0ABF8A),
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Kamu hebat! Teruslah berkontribusi untuk bumi.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF6B7A7B),
+                  fontSize: 14,
+                ),
+              ),
+              const SizedBox(height: 32),
+              
+              // Claim Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: widget.onClaim,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0ABF8A),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'Selesai',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
