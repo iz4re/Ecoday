@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import '../auth/auth_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.username});
+
+  final String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              _buildProfileHeader(),
+              _buildProfileHeader(context),
               const SizedBox(height: 20),
               _buildStatsGrid(),
               const SizedBox(height: 20),
@@ -37,7 +40,25 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(BuildContext context) {
+    // Extract display name from username or email
+    String displayName = username ?? 'User';
+    String initials = 'U';
+    
+    if (displayName.contains('@')) {
+      // If email, extract part before @
+      displayName = displayName.split('@')[0];
+    }
+    
+    // Get initials (first 2 letters uppercase)
+    if (displayName.isNotEmpty) {
+      if (displayName.length >= 2) {
+        initials = displayName.substring(0, 2).toUpperCase();
+      } else {
+        initials = displayName[0].toUpperCase();
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
@@ -75,10 +96,10 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'AW',
-                  style: TextStyle(
+                  initials,
+                  style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF9C27B0),
@@ -88,21 +109,36 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Name
-            const Text(
-              'alan walker',
-              style: TextStyle(
+            Text(
+              displayName,
+              style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
             const SizedBox(height: 4),
-            // Email
-            const Text(
-              'user@gmail.com',
-              style: TextStyle(
+            // Username handle
+            Text(
+              '@$displayName',
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.white70,
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Bio
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Text(
+                'Eco warrior 🌱 | Fighting climate change one quest at a time',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white.withValues(alpha: 0.9),
+                  height: 1.4,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -177,16 +213,26 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             // Settings button
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.settings,
-                color: Colors.white,
-                size: 24,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(username: username),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                  size: 24,
+                ),
               ),
             ),
           ],

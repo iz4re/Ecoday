@@ -300,13 +300,6 @@ class _LoginForm extends StatelessWidget {
             },
           ),
         ),
-        const SizedBox(height: 18),
-        const InfoPill(
-          title: 'Database Mode',
-          subtitle: 'Data tersimpan di Supabase database',
-          icon: Icons.auto_awesome,
-          iconColor: AppTheme.accentYellow,
-        ),
       ],
     );
   }

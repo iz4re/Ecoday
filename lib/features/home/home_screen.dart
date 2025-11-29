@@ -12,7 +12,9 @@ import '../quests/widgets/quest_card.dart';
 import '../quests/widgets/tips_quest_card.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.username});
+
+  final String? username;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -60,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (_currentIndex == 3) {
       currentScreen = const RewardScreen();
     } else if (_currentIndex == 4) {
-      currentScreen = const ProfileScreen();
+      currentScreen = ProfileScreen(username: widget.username);
     } else {
       currentScreen = _buildPlaceholder();
     }
@@ -373,6 +375,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHeader() {
+    // Extract display name from username or email
+    String displayName = widget.username ?? 'User';
+    if (displayName.contains('@')) {
+      // If email, extract part before @
+      displayName = displayName.split('@')[0];
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -384,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 children: [
                   Text(
-                    'Halo, Yudha! ',
+                    'Halo, $displayName! ',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppTheme.primaryGreen,

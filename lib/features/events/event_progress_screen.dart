@@ -4,7 +4,7 @@ import 'widgets/event_progress_card.dart';
 import 'widgets/event_quest_card.dart';
 import 'widgets/event_leaderboard_card.dart';
 
-class EventProgressScreen extends StatelessWidget {
+class EventProgressScreen extends StatefulWidget {
   const EventProgressScreen({
     super.key,
     required this.title,
@@ -19,6 +19,21 @@ class EventProgressScreen extends StatelessWidget {
   final int daysLeft;
   final int participants;
   final int rewards;
+
+  @override
+  State<EventProgressScreen> createState() => _EventProgressScreenState();
+}
+
+class _EventProgressScreenState extends State<EventProgressScreen> {
+  int _totalXpEarned = 0;
+  int _questsCompleted = 0;
+
+  void _onQuestCompleted(int xpReward) {
+    setState(() {
+      _totalXpEarned += xpReward;
+      _questsCompleted++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +51,9 @@ class EventProgressScreen extends StatelessWidget {
                   children: [
                     _buildEventCard(),
                     const SizedBox(height: 20),
-                    const EventProgressCard(
-                      xpEarned: 0,
-                      questsCompleted: 0,
+                    EventProgressCard(
+                      xpEarned: _totalXpEarned,
+                      questsCompleted: _questsCompleted,
                     ),
                     const SizedBox(height: 20),
                     _buildQuestSection(),
@@ -107,7 +122,7 @@ class EventProgressScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            widget.title,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -116,7 +131,7 @@ class EventProgressScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            description,
+            widget.description,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 13,
@@ -129,7 +144,7 @@ class EventProgressScreen extends StatelessWidget {
                 child: _buildInfoBox(
                   Icons.access_time,
                   'Sisa Waktu',
-                  '$daysLeft hari',
+                  '${widget.daysLeft} hari',
                 ),
               ),
               const SizedBox(width: 12),
@@ -137,7 +152,7 @@ class EventProgressScreen extends StatelessWidget {
                 child: _buildInfoBox(
                   Icons.people_outline,
                   'Peserta',
-                  '$participants+',
+                  '${widget.participants}+',
                 ),
               ),
               const SizedBox(width: 12),
@@ -145,7 +160,7 @@ class EventProgressScreen extends StatelessWidget {
                 child: _buildInfoBox(
                   Icons.emoji_events_outlined,
                   'Hadiah',
-                  '$rewards',
+                  '${widget.rewards}',
                 ),
               ),
             ],
@@ -210,45 +225,52 @@ class EventProgressScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        const EventQuestCard(
+        EventQuestCard(
           icon: '🥤',
           title: 'Bawa Tumbler',
           description: 'Gunakan tumbler hari ini',
           xp: 15,
           tag: 'Harian',
           category: 'Reduce Plastic',
-          tagColor: Color(0xFFFF9500),
+          tagColor: const Color(0xFFFF9500),
           hasUpload: true,
+          onCompleted: _onQuestCompleted,
         ),
         const SizedBox(height: 12),
-        const EventQuestCard(
+        EventQuestCard(
           icon: '🛍️',
           title: 'Tas Belanja Sendiri',
           description: 'Bawa tas belanja reusable',
           xp: 10,
           tag: 'Harian',
           category: 'Reduce Plastic',
-          tagColor: Color(0xFF0ABF8A),
+          tagColor: const Color(0xFF0ABF8A),
+          hasUpload: true,
+          onCompleted: _onQuestCompleted,
         ),
         const SizedBox(height: 12),
-        const EventQuestCard(
+        EventQuestCard(
           icon: '🚫',
           title: 'Tolak Sedotan Plastik',
           description: 'Katakan tidak pada sedotan plastik',
           xp: 10,
           tag: 'Harian',
           category: 'Reduce Plastic',
-          tagColor: Color(0xFF0ABF8A),
+          tagColor: const Color(0xFF0ABF8A),
+          hasUpload: true,
+          onCompleted: _onQuestCompleted,
         ),
         const SizedBox(height: 12),
-        const EventQuestCard(
+        EventQuestCard(
           icon: '🌱',
           title: 'Bebas Plastik Sekali Pakai',
           description: 'Tidak membeli produk dengan plastik sekali pakai selama 7 hari',
           xp: 80,
           tag: 'Mingguan',
           category: 'Reduce Plastic',
-          tagColor: Color(0xFF5A9BFF),
+          tagColor: const Color(0xFF5A9BFF),
+          hasUpload: true,
+          onCompleted: _onQuestCompleted,
         ),
       ],
     );
